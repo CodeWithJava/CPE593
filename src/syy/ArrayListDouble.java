@@ -212,18 +212,5 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     	for (int i = 0; i < subList.length; i++)
     		subList[i] = this.array[formIndex + i];
     	return subList;
-    }
-    
-     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }    
 }
