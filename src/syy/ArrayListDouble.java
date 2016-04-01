@@ -161,6 +161,11 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     
     public void add(int index, double e)
     {
+    	if (index > this.size)
+    	{
+    		System.out.println("Index out of range.");
+			throw new IndexOutOfBoundsException();
+    	}
     	double[] temp = this.array;
 		expand();
 		for (int i = 0; i <= this.size + 1; i++)
@@ -177,6 +182,11 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     
     public double remove(int index)
     {
+    	if (index > this.size)
+    	{
+    		System.out.println("Index out of range.");
+			throw new IndexOutOfBoundsException();
+    	}
     	double[] temp = this.array;
     	this.array = new double[this.capacity]; // deleted??
     	double elementOfIndex;
@@ -212,5 +222,16 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     	for (int i = 0; i < subList.length; i++)
     		subList[i] = this.array[formIndex + i];
     	return subList;
-    }    
+    }
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
