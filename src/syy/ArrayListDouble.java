@@ -1,14 +1,15 @@
 /**
 CopyRight:
-Project:
+Project: Java Replacement Data Structure
 Module ID:
 Comment:
 Course: CPE 593 Applied Data Structures and Algorithms
 Title: Implement ArrayList & HashMap
-JDK Version: 1.8.0_71
+JDK Version: 1.8.0_77
+Group Member: Songnian Yin, Yabin Han, Ying Cui
 Author: Ying Cui
 Create Date: March 17th 2016
-Finish Date:  2016
+Finish Date: 
 Description: Implement ArrayList in Double Type
 */
 package syy;
@@ -28,6 +29,8 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     
     public ArrayListDouble(int capacity)
     {
+    	if (capacity < 0)
+    		throw new IllegalArgumentException("Illegal Capacity: " + capacity);
     	this.capacity = capacity;
     	this.size = 0;
     	this.array = new double[this.capacity];
@@ -132,7 +135,7 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     	}
     	else
     		return false;
-    } // no throws so far
+    }
     
     // Bulk Modification Operations
     public void clear()
@@ -212,15 +215,15 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     				return -1;
     }
     
-    public syy.List<Double> subList(int formIndex, int toIndex)
+    public ArrayListDouble subList(int formIndex, int toIndex)
     {
     	if (formIndex > this.size || toIndex > this.size)
     		throw new IndexOutOfBoundsException("Index out of range.");
     	if (formIndex > toIndex)
     		throw new IllegalArgumentException("Indices are illegal.");
-    	double[] subList = new double[toIndex - formIndex];
-    	for (int i = 0; i < subList.length; i++)
-    		subList[i] = this.array[formIndex + i];
+    	ArrayListDouble subList = new ArrayListDouble(toIndex - formIndex);
+    	for (int i = 0; i < subList.size; i++)
+    		subList.array[i] = this.array[formIndex + i];
     	return subList;
     }
 }
