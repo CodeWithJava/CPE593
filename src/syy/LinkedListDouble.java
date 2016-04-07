@@ -18,38 +18,43 @@ package syy;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 
-public class LinkedListDouble implements Iterator<Double>{
-	private static class Node
-	{
-		private double val;
-		Node prev;
-		Node next;
-		Node(double val)
-		{
-			this.val = val;
-		}
-	}
-	
-	private int capacity;
+public class LinkedListDouble implements Iterator<Double>
+{
+	private int theSize;
 	private Node head;
 	private Node tail;
 	
-	//Constructor
-	LinkedListDouble()
+	private static class Node
 	{
-		this(10);
+		public double val;
+		public Node prev;
+		public Node next;
+		
+		public Node(double val, Node prev, Node next)
+		{
+			this.val = val;
+			this.prev = prev;
+			this.next = next;
+		}
 	}
 	
-	public LinkedListDouble(int capacity)
+	//Constructor
+	public LinkedListDouble()
 	{
-		this.capacity = capacity;
-		head = null;
-		tail = null;
+		doClear();
+	}
+	
+	private void doClear()
+	{
+		head = new Node(0, null, null);
+		tail = new Node(0, head, null);
+		head.next = tail;
+		this.theSize = 0;
 	}
 	
 	public int size()
 	{
-		return this.capacity;
+		return this.theSize;
 	}
 	
 	public boolean isEmpty()
@@ -93,9 +98,9 @@ public class LinkedListDouble implements Iterator<Double>{
 	
 	public double[] toArray()
 	{
-		double[] result = new double[this.capacity];
+		double[] result = new double[this.theSize];
 		Node p = head;
-		for (int i = 0; i < this.capacity; i++)
+		for (int i = 0; i < this.theSize; i++)
 		{
 			result[i] = p.val;
 			p = p.next;
@@ -104,50 +109,39 @@ public class LinkedListDouble implements Iterator<Double>{
 	}
 	
 	// Modification Operations
-	public boolean addFront(Double e)
+	public boolean addBefore(Node p, Double e)
 	{
-		Node node = new Node(e);
-		node.next = head;
-		node.prev = null;
-		if (head != null)
-			head.prev = node;
-		head = node;
-		if (tail == null)
-			tail = head;
-		this.capacity++;
+		Node node = new Node(e, p.prev, p);
+		node.prev.next = node;
+		p.prev = node;
+		this.theSize++;
 		return true;
 	}
 	
-	public boolean addLast(Double e)
+	public boolean addLater(Node p, Double e)
 	{
-		Node node = new Node(e);
-		node.prev = tail;
-		node.next = null;
-		if (tail != null)
-			tail.next = node;
-		tail = node;
-		if (head == null)
-			head = tail;
-		this.capacity++;
+		Node node = new Node(e, p, p.next);
+		node.next.prev = node;
+		p.next = node;
+		this.theSize++;
 		return true;
 	}
 	
+	// Remove the first node with value e
 	public boolean remove(Double e)
 	{
-		for(Node p = head; p != tail; p = p.next)
-		{
+		Node p;
+		for (p = head; p.next != null; p = p.next)
 			if (p.val == e)
 			{
-				p.prev.next = p.next;
 				p.next.prev = p.prev;
-				this.capacity--;
-				break;
+				p.prev.next = p.next;
+				theSize--;
 			}
 			else
 			{
-				System.out.println("No such element in list.");
+				System.out.println("No such element found.");
 				return false;
-			}
 		}
 		return true;
 	}
@@ -155,22 +149,10 @@ public class LinkedListDouble implements Iterator<Double>{
 	// Bulk Modification Operations
 	public void clear()
 	{
-		head = null;
-		head.next = null;
-		tail = null;
-		tail.prev = null;
-		this.capacity = 0;
+		doClear();
 	}
 	
 	// Positional Access Operations
-	public Node findNode(int pos)
-	{
-		Node temp = head;
-		for (int i = 0; i < pos; i++)
-			temp = temp.next;
-		return temp;
-	}
-	
 	public double getVal(int pos)
 	{
 		if (head == null)
@@ -187,53 +169,52 @@ public class LinkedListDouble implements Iterator<Double>{
 		return temp.val;
 	}
 	
-	public void insertAfter(int pos, double e)
-	{
-		Node temp = findNode(pos);
-		if (temp == null)
-		{
-			System.out.println("Index out of range.");
-			throw new IndexOutOfBoundsException();
-		}
-		else
-		{
-			Node node = new Node(e);
-			temp.next.prev = node;
-			node.next = temp.next;
-			temp.next = node;
-			node.prev = temp;
-			this.capacity++;
-		}
-	}
-	
-	public void insertBefore(int pos, double e)
-	{
-		insertAfter(pos - 1, e);
-	}
-	
-	public double remove(int pos)
-	{
-		Node temp = findNode(pos);
-		if (temp == null)
-		{
-			System.out.println("Index out of range.");
-			throw new IndexOutOfBoundsException();
-		}
-		temp.prev.next = temp.next;
-		temp.next.prev = temp.prev;
-		this.capacity--;
-		return temp.val;
-	}
-	
+//	public void insertAfter(int pos, double e)
+//	{
+//		Node temp = findNode(pos);
+//		if (temp == null)
+//		{
+//			System.out.println("Index out of range.");
+//			throw new IndexOutOfBoundsException();
+//		}
+//		else
+//		{
+//			Node node = new Node(e, temp, temp.next);
+//			temp.next.prev = node;
+//			temp.next = node;
+//			this.theSize++;
+//		}
+//	}
+//	
+//	public void insertBefore(int pos, double e)
+//	{
+//		insertAfter(pos - 1, e);
+//	}
+//	
+//	public double remove(int pos)
+//	{
+//		Node temp = findNode(pos);
+//		if (temp == null)
+//		{
+//			System.out.println("Index out of range.");
+//			throw new IndexOutOfBoundsException();
+//		}
+//		temp.prev.next = temp.next;
+//		temp.next.prev = temp.prev;
+//		this.theSize--;
+//		return temp.val;
+//	}
+//	
 	public syy.List<Double> subList(int formIndex, int toIndex)
     {
-    	if (formIndex > this.capacity || toIndex > this.capacity)
+    	if (formIndex > this.theSize || toIndex > this.theSize)
     		throw new IndexOutOfBoundsException("Index out of range.");
     	if (formIndex > toIndex)
     		throw new IllegalArgumentException("Indices are illegal.");
     	Node former = findNode(formIndex);
     	Node to = findNode(toIndex);
-    	LinkedListDouble subList = new LinkedListDouble(toIndex - formIndex);
+    	LinkedListDouble subList = new LinkedListDouble();
+    	subList.theSize = toIndex - formIndex;
     	Node p = former;
     	Node q = subList.head;
     	while(p != to)
@@ -244,4 +225,12 @@ public class LinkedListDouble implements Iterator<Double>{
     	}
     	return subList;
     }
+	
+	public Node findNode(int pos)
+	{
+		Node temp = head;
+		for (int i = 0; i < pos; i++)
+			temp = temp.next;
+		return temp;
+	}
 }
