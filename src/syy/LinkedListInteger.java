@@ -171,6 +171,122 @@ public class LinkedListInteger {
     	}
     	return subList;
 	}
+	
+	public ListIterator<Integer> listIterator(int index)
+	{
+		checkPositionIndex(index);
+		return new ListItr(index);
+	}
+	private class ListItr implements ListIterator<Integer>
+	{
+		private node lastReturned;
+		private node next;
+		private int nextIndex;
+		private int expectedModCount = modCount;
+		
+		ListItr(int index)
+		{
+			next = (index == size) ? null : node(index);
+			nextIndex = index;
+		}
+		
+		public boolean hasNext()
+		{
+			return nextIndex < size;
+		}
+		
+		public int next()
+		{
+			checkForComodification();
+			if(!hasNext())
+				throw new NoSuchElementException();
+			
+			lastReturned = next;
+			next = next.next;
+			nextIndex++;
+			return lastReturned.val;
+		}
+		
+		public boolean hasPrevious()
+		{
+			return nextIndex > 0;
+		}
+		
+		public int previous()
+		{
+			checkForComodification();
+			if(!hasPrevious())
+				throw new NoSuchElementException();
+			
+			lastReturned = next = (next == null) ? last : next.pre;
+			nextIndex--;
+			return lastReturned.val;
+		}
+		
+		public int nextIndex()
+		{
+			return nextIndex;
+		}
+		
+		pubic int previousIndex()
+		{
+			return nextIndex--;
+		}
+		
+		public void remove()
+		{
+			checkForComodification();
+			if(lastReturned == null)
+				throw new IllegalStateException();
+			node lastNext = lastReturned.next;
+			unlink(lastReturned);//have to write unlink;
+			if(next == lastReturned)
+				next = lastNext;
+			else
+				nextIndex--;
+			lastReturned = null;
+			expectedModCount++;
+		}
+		
+		final void checkForComodification()
+		{
+			if(modCount != expectedModCount)
+				throw new ConcurrentModificationException();
+		}
+	}
+	
+	void unlink(node x)
+	{
+		final element = x.val;
+		final node next = x.next;
+		final node pre = x.pre;
+		
+		if(pre == null)
+		{
+			head = next;
+		}
+		else 
+		{
+			pre.next = next;
+			x.pre = null;
+		}
+		
+		if(next = null)
+		{
+			tail = pre;
+		}
+		else
+		{
+			next.pre = pre;
+			x.next = null;
+		}
+		
+		x.val = 0;
+		size--;
+			
+	}
+	
+	
 }
 class node
 {
