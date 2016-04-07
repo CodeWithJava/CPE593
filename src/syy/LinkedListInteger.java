@@ -1,15 +1,48 @@
+/**
+CopyRight:
+Project:Java Replacement Data Structure
+Module ID:
+Comment:
+Course: CPE 593 Applied Data Structures and Algorithms
+Title: Implement ArrayList & HashMap
+JDK Version: 1.8.0_77
+Group Member: Songnian Yin, Yabin Han, Ying Cui
+Author: Songnian Yin
+Create Date: March 30th 2016
+Finish Date: 
+Description: Implement LinkedList in Double Type
+*/
+
 package syy;
 
-public class LinkedListInteger {
-	int size;
-	node head;
-	node tail;
-	
-	//constructor
-	LinkedListInteger()
+import java.util.Iterator;
+import java.util.List;
+
+public class LinkedListDouble implements Iterator<Double>
+{
+	//ListNode
+	private static class Node
 	{
-		this.head = null;
-		this.tail = null;
+		public double val;
+		public Node prev;
+		public Node next;
+		
+		public Node(double val)
+		{
+			this.val = val;
+			this.prev = null;
+			this.next = null;
+		}
+	}
+
+	private size;
+	private Node head;
+	private Node tail;
+	
+	//Constructor
+	public LinkedListDouble()
+	{
+		clear();
 	}
 	
 	public int size()
@@ -19,286 +52,184 @@ public class LinkedListInteger {
 	
 	public boolean isEmpty()
 	{
-		return this.size == 0;
+		return size == 0;
 	}
 	
-	//Modification Operation
-	public boolean addFront(int e)
+	public Iterator<Double> iterator()
 	{
-		Node node = new Node(e);
-		node.next = head;
-		node.pre = null;
-		if(head != null)
-			head.pre =node;
-		head =node;
-
-		
-		if(tail == null)
-			tail = head;
-		
+		Iterator<Double> iterator = new Iterator<>()
+		{
+			private Node currentNode = head;
+			@Override
+			public boolean hasNext()
+			{
+				return currentNode.next != null;
+			}
+			@Override
+			public Double next()
+			{
+				if (!hasNext())
+					throw new java.util.NoSuchElementException();
+				return currentNode.next.val;
+			}
+			@Override
+			public void remove()
+			{
+				if (head == null)
+					System.out.println("It's an empty list.");
+				else
+				{
+					Node temp = currentNode;
+					temp.prev.next = temp.next;
+					temp.next.prev = temp.prev;
+					currentNode = temp.prev;
+				}
+			}
+		};
+		return iterator;
+	}
+	
+	public double[] toArray()
+	{
+		double[] result = new double[this.theSize];
+		Node p = head;
+		for (int i = 0; i < this.theSize; i++)
+		{
+			result[i] = p.val;
+			p = p.next;
+		}
+		return result;			
+	}
+	
+	// Modification Operations
+	public boolean add(double val)
+	{
+		Node node = new Node(val);
+		tail.next = node;
+		node.prev = tail;
+		node.next = null;
+		tail = node;
 		this.size++;
 		return true;
 	}
 	
-	public boolean addLast(int e)
+	public void add(int index,double val)
 	{
-		Node node = new Node(e);
-		Node.pre = tial;
-		node.next = null;
-		if(tail != null)
-		{
-			tail.next = node;
-		}
-		tail = node;
-		if( head == null)
-			head = tail;
-		this.size++
-		return true;
+		Node node = new Node(val);
+		if(index < 0 || index > this.size)
+			return false;
+		Node p = head;
+		for(int i = 0;i < index;i++)
+			p = p.next;
+		Node temp = p.next;
+		p.next = node;
+		node.prev = p;
+		node.next = temp;
+		temp.prev = node;
+		this.size++;
 	}
 	
-	public void remove(int e)
+	public void addFirst(double val)
 	{
-		for(Node p = head; p! = null; p = p.next)
-		{
-			if(p.val == e)
+		Node node = new Node(val);
+		node.next = head;
+		node.prev = null;
+		head = node;
+	}
+
+	public void addLast(double val)
+	{
+		Node node = new Node(val);
+		node.prev = tail;
+		tail.next = node;
+		node.next = null;
+		tail = node;
+	}
+	// Remove the first node with value e
+	public boolean remove(Double e)
+	{
+		Node p;
+		for (p = head; p.next != null; p = p.next)
+			if (p.val == e)
 			{
-				p.pre.next = p.next;
-				p.next.pre = p.pre;
-				p.next = null;
-				p.pre = null;
-				this.size--;
-				break;
+				p.next.prev = p.prev;
+				p.prev.next = p.next;
+				theSize--;
 			}
 			else
 			{
-				System.out.println("No such element in list");
-			}	
+				System.out.println("No such element found.");
+				return false;
 		}
+		return true;
 	}
 	
+	// Bulk Modification Operations
 	public void clear()
+	{
+		doClear();
+	}
+
+	private void doClear()
 	{
 		head = null;
 		tail = null;
-		head.next = null;
-		tail.pre = null;
 		this.size = 0;
-		
+	}
+
+	// Positional Access Operations
+	public double getVal(int pos)
+	{
+		if (head == null)
+		{
+			System.out.println("Index out of range.");
+			throw new IndexOutOfBoundsException();
+		}
+		Node temp = findNode(pos);
+		if (temp == null)
+		{
+			System.out.println("Index out of range.");
+			throw new IndexOutOfBoundsException();
+		}
+		return temp.val;
+	}
+
+	public double getFirst();
+	{
+		return head.val;
+	}
+
+	public double getLast();
+	{
+		return tail.val;
 	}
 	
-	//Postional Access Operations
-	public int getValue(int pos)//postion - value
+	public List<Double> subList(int formIndex, int toIndex)
 	{
-		if(pos > size -1)
-			return -1;
-		else
+		if (formIndex > this.theSize || toIndex > this.theSize)
+			throw new IndexOutOfBoundsException("Index out of range.");
+		if (formIndex > toIndex)
+			throw new IllegalArgumentException("Indices are illegal.");
+		Node former = findNode(formIndex);
+		Node to = findNode(toIndex);
+		LinkedListDouble subList = new LinkedListDouble();
+		subList.theSize = toIndex - formIndex;
+		Node p = former;
+		Node q = subList.head;
+		while(p != to)
 		{
-			Node p = head;
-			for(int i =0 ; i < pos; i++)
+			p = q;
 			p = p.next;
-			return p.val;
+			q = q.next;
 		}
-		
-	}
-	
-	public void insertAfter(int pos, int e)
-	{
-		if(pos < 0 || pos > this.size)
-			System.out.println("Out of range");
-		else if(pos == this.size -1)
-			addLast(int e);
-		else
-		{
-			Node node = head;
-			Node newnode = new Node(e);
-			for(int i = 0; i < pos;i++)
-				node = node.next;
-			newnode.next = node.next;
-			node.next.pre = newnode;
-			node.next = newnode;
-			newnode.pre = node;
-			this.size++;
-		}
-		
-	}
-	
-	public void insertBefore(int pos,int e)
-	{
-		if(pos < 0 || pos > this.size)
-			System.out.println("out of range");
-		else if(pos == 0)
-			addFront(int e);
-		else
-		{
-			Node p = head;
-			Node temp = new Node(int e);
-			for(int i = 0; i < pos; i++)
-				p = p.next;
-			temp.next = p;
-			temp.pre = p.pre;
-			temp.pre.next = temp;
-			temp.next.pre = temp;
-			this.size++;
-		}
+		return subList;
 	}
 	
 	public Node findNode(int pos)
 	{
-		Node p = head;
-		for(int i = 0; i < pos;i++)
-		{
-			p = p.next;
-		}
-		return p;
+		Node temp = head;
+		for (int i = 0; i < pos; i++)
+			temp = temp.next;
+		return temp;
 	}
-	
-	public syy.List<Integer> sublist(int formIndex, int toIndex)
-	{
-		if (formIndex > this.capacity || toIndex > this.capacity)
-    		throw new IndexOutOfBoundsException("Index out of range.");
-    	if (formIndex > toIndex)
-    		throw new IllegalArgumentException("Indices are illegal.");
-    	Node former = findNode(formIndex);
-    	Node to = findNode(toIndex);
-    	LinkedListInteger subList = new LinkedListInteger(toIndex - formIndex);
-    	Node p = former;
-    	Node q = subList.head;
-    	while(p != to)
-    	{
-    		p = q;
-    		p = p.next;
-    		q = q.next;
-    	}
-    	return subList;
-	}
-	
-	public ListIterator<Integer> listIterator(int index)
-	{
-		checkPositionIndex(index);
-		return new ListItr(index);
-	}
-	private class ListItr implements ListIterator<Integer>
-	{
-		private node lastReturned;
-		private node next;
-		private int nextIndex;
-		private int expectedModCount = modCount;
-		
-		ListItr(int index)
-		{
-			next = (index == size) ? null : node(index);
-			nextIndex = index;
-		}
-		
-		public boolean hasNext()
-		{
-			return nextIndex < size;
-		}
-		
-		public int next()
-		{
-			checkForComodification();
-			if(!hasNext())
-				throw new NoSuchElementException();
-			
-			lastReturned = next;
-			next = next.next;
-			nextIndex++;
-			return lastReturned.val;
-		}
-		
-		public boolean hasPrevious()
-		{
-			return nextIndex > 0;
-		}
-		
-		public int previous()
-		{
-			checkForComodification();
-			if(!hasPrevious())
-				throw new NoSuchElementException();
-			
-			lastReturned = next = (next == null) ? last : next.pre;
-			nextIndex--;
-			return lastReturned.val;
-		}
-		
-		public int nextIndex()
-		{
-			return nextIndex;
-		}
-		
-		pubic int previousIndex()
-		{
-			return nextIndex--;
-		}
-		
-		public void remove()
-		{
-			checkForComodification();
-			if(lastReturned == null)
-				throw new IllegalStateException();
-			node lastNext = lastReturned.next;
-			unlink(lastReturned);//have to write unlink;
-			if(next == lastReturned)
-				next = lastNext;
-			else
-				nextIndex--;
-			lastReturned = null;
-			expectedModCount++;
-		}
-		
-		final void checkForComodification()
-		{
-			if(modCount != expectedModCount)
-				throw new ConcurrentModificationException();
-		}
-	}
-	
-	void unlink(node x)
-	{
-		final element = x.val;
-		final node next = x.next;
-		final node pre = x.pre;
-		
-		if(pre == null)
-		{
-			head = next;
-		}
-		else 
-		{
-			pre.next = next;
-			x.pre = null;
-		}
-		
-		if(next = null)
-		{
-			tail = pre;
-		}
-		else
-		{
-			next.pre = pre;
-			x.next = null;
-		}
-		
-		x.val = 0;
-		size--;
-			
-	}
-	
-	
-}
-class node
-{
-	int val;
-	node next;
-	node pre;
-	
-	node(int val)
-	{
-		this.val = val;
-		this.next = null;
-		this.pre = null;
-	}
-	
 }
