@@ -4,17 +4,19 @@ import java.util.List;
 
 public class ArrayListInteger implements InterfaceList, Iterator<Integer>
 {
-	private int capacity;
-	private int size;
-	private int [] array;
+	private int capacity;//the hole size of array;
+	private int size;//the use of capacity;
+	private int [] array;// array table;
 	
 	ArrayListInteger()
 	{
-		this(16);
+		this(10);
 	}
 	
 	public ArrayListInteger(int capacity)
 	{
+		if(capcaity < 0)
+			throw new IllegalArgumentException("Illegal Capcity:" + capacity);
 		this.capacity = capacity;
 		this.size = 0;
 		this.array = new int [this.capacity];
@@ -33,6 +35,7 @@ public class ArrayListInteger implements InterfaceList, Iterator<Integer>
 		else
 			return this.size;
 	}
+	
 	
 	public boolean isEmpty()
 	{
@@ -183,6 +186,24 @@ public class ArrayListInteger implements InterfaceList, Iterator<Integer>
     		else
     			if (i == this.size)
     				return -1;
+	}
+	/*
+	*Return the index of the last occurrentce of the specified element;
+	*/
+	public int lastIndexOf(Object o)
+	{
+		if(o instanceof Integer)
+		{
+			for(int i = size -1 ; i >= 0 ; i--)
+				if(o == array[i])
+					return i;
+				else
+					System.out.prinltn("No such element");
+		}
+		else
+		{
+			System.out.println("the element is not a integer");
+		}
 	}
 	
 	public syy.List<Interger>subList(int formIndex,int toIndex)
