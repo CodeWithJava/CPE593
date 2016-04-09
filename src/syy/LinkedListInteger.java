@@ -18,12 +18,12 @@ package syy;
 import java.util.Iterator;
 import java.util.List;
 
-public class LinkedListDouble implements Iterator<Double>
+public class LinkedListInterger implements Iterator<Double>
 {
 	//ListNode
 	private static class Node
 	{
-		public double val;
+		public int val;
 		public Node prev;
 		public Node next;
 		
@@ -40,7 +40,7 @@ public class LinkedListDouble implements Iterator<Double>
 	private Node tail;
 	
 	//Constructor
-	public LinkedListDouble()
+	public LinkedListInterger()
 	{
 		clear();
 	}
@@ -55,9 +55,9 @@ public class LinkedListDouble implements Iterator<Double>
 		return size == 0;
 	}
 	
-	public Iterator<Double> iterator()
+	public Iterator<Integer> iterator()
 	{
-		Iterator<Double> iterator = new Iterator<>()
+		Iterator<Integer> iterator = new Iterator<>()
 		{
 			private Node currentNode = head;
 			@Override
@@ -66,7 +66,7 @@ public class LinkedListDouble implements Iterator<Double>
 				return currentNode.next != null;
 			}
 			@Override
-			public Double next()
+			public Integer next()
 			{
 				if (!hasNext())
 					throw new java.util.NoSuchElementException();
@@ -89,9 +89,9 @@ public class LinkedListDouble implements Iterator<Double>
 		return iterator;
 	}
 	
-	public double[] toArray()
+	public int[] toArray()
 	{
-		double[] result = new double[this.theSize];
+		int[] result = new int[this.theSize];
 		Node p = head;
 		for (int i = 0; i < this.theSize; i++)
 		{
@@ -102,7 +102,7 @@ public class LinkedListDouble implements Iterator<Double>
 	}
 	
 	// Modification Operations
-	public boolean add(double val)
+	public boolean add(int val)
 	{
 		Node node = new Node(val);
 		tail.next = node;
@@ -113,7 +113,7 @@ public class LinkedListDouble implements Iterator<Double>
 		return true;
 	}
 	
-	public void add(int index,double val)
+	public void add(int index,int val)
 	{
 		Node node = new Node(val);
 		if(index < 0 || index > this.size)
@@ -129,7 +129,7 @@ public class LinkedListDouble implements Iterator<Double>
 		this.size++;
 	}
 	
-	public void addFirst(double val)
+	public void addFirst(int val)
 	{
 		Node node = new Node(val);
 		node.next = head;
@@ -137,7 +137,7 @@ public class LinkedListDouble implements Iterator<Double>
 		head = node;
 	}
 
-	public void addLast(double val)
+	public void addLast(int val)
 	{
 		Node node = new Node(val);
 		node.prev = tail;
@@ -146,7 +146,7 @@ public class LinkedListDouble implements Iterator<Double>
 		tail = node;
 	}
 	// Remove the first node with value e
-	public boolean remove(Double e)
+	public boolean remove(int e)
 	{
 		Node p;
 		for (p = head; p.next != null; p = p.next)
@@ -178,7 +178,7 @@ public class LinkedListDouble implements Iterator<Double>
 	}
 
 	// Positional Access Operations
-	public double getVal(int pos)
+	public int getVal(int pos)
 	{
 		if (head == null)
 		{
@@ -194,17 +194,17 @@ public class LinkedListDouble implements Iterator<Double>
 		return temp.val;
 	}
 
-	public double getFirst();
+	public int getFirst();
 	{
 		return head.val;
 	}
 
-	public double getLast();
+	public int getLast();
 	{
 		return tail.val;
 	}
 	
-	public List<Double> subList(int formIndex, int toIndex)
+	public List<Integer> subList(int formIndex, int toIndex)
 	{
 		if (formIndex > this.theSize || toIndex > this.theSize)
 			throw new IndexOutOfBoundsException("Index out of range.");
