@@ -20,7 +20,7 @@ import java.util.List;
 
 public class LinkedListDouble implements Iterator<Double>
 {
-	//ListNode
+	// ListNode
 	private static class Node
 	{
 		public double val;
@@ -35,11 +35,11 @@ public class LinkedListDouble implements Iterator<Double>
 		}
 	}
 
-	private size;
+	private int size;
 	private Node head;
 	private Node tail;
 	
-	//Constructor
+	// Constructor
 	public LinkedListDouble()
 	{
 		clear();
@@ -91,9 +91,9 @@ public class LinkedListDouble implements Iterator<Double>
 	
 	public double[] toArray()
 	{
-		double[] result = new double[this.theSize];
+		double[] result = new double[this.size];
 		Node p = head;
-		for (int i = 0; i < this.theSize; i++)
+		for (int i = 0; i < this.size; i++)
 		{
 			result[i] = p.val;
 			p = p.next;
@@ -117,7 +117,7 @@ public class LinkedListDouble implements Iterator<Double>
 	{
 		Node node = new Node(val);
 		if(index < 0 || index > this.size)
-			return false;
+			System.out.println("Index out of range.");
 		Node p = head;
 		for(int i = 0;i < index;i++)
 			p = p.next;
@@ -145,6 +145,7 @@ public class LinkedListDouble implements Iterator<Double>
 		node.next = null;
 		tail = node;
 	}
+	
 	// Remove the first node with value e
 	public boolean remove(Double e)
 	{
@@ -154,7 +155,7 @@ public class LinkedListDouble implements Iterator<Double>
 			{
 				p.next.prev = p.prev;
 				p.prev.next = p.next;
-				theSize--;
+				this.size--;
 			}
 			else
 			{
@@ -194,26 +195,26 @@ public class LinkedListDouble implements Iterator<Double>
 		return temp.val;
 	}
 
-	public double getFirst();
+	public double getFirst()
 	{
 		return head.val;
 	}
 
-	public double getLast();
+	public double getLast()
 	{
 		return tail.val;
 	}
 	
-	public List<Double> subList(int formIndex, int toIndex)
+	public LinkedListDouble subList(int formIndex, int toIndex)
 	{
-		if (formIndex > this.theSize || toIndex > this.theSize)
+		if (formIndex > this.size || toIndex > this.size)
 			throw new IndexOutOfBoundsException("Index out of range.");
 		if (formIndex > toIndex)
 			throw new IllegalArgumentException("Indices are illegal.");
 		Node former = findNode(formIndex);
 		Node to = findNode(toIndex);
 		LinkedListDouble subList = new LinkedListDouble();
-		subList.theSize = toIndex - formIndex;
+		subList.size = toIndex - formIndex;
 		Node p = former;
 		Node q = subList.head;
 		while(p != to)
