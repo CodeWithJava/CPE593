@@ -16,7 +16,7 @@ package syy;
 import java.util.Iterator;
 import java.util.List;
 
-public class ArrayListDouble implements InterfaceList, Iterator<Double>
+public class ArrayListDouble implements Iterator<Double>
 {
     private int capacity;
     private int size;
@@ -55,7 +55,6 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     	return this.size == 0;
     }
     
-    @Override
     public Iterator<Double> iterator()
     {
     	Iterator<Double> iterator = new Iterator<Double>()
@@ -92,21 +91,23 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     
 
     // Modification Operations
-    public boolean add(Object e)
-    {
-    	if (e instanceof Double)
-    	{
-    		double[] temp = this.array;
-    		expand();
-    		for (int i = 0; i <= this.size; i++)
-    			this.array[i] = temp[i];
-    		this.array[this.size + 1] = (double) e;
-    		this.size++;
-    		return true;
-    	}
-    	else
-    		return false;
-    }
+	public void append(double value)
+	{
+		add2(size,value);
+	}
+
+	// add element after specific index
+	private void add2(int index,double value)
+	{
+		if(index < 0 || index > size)
+			System.out.println("Out of ArrayBound:" + index);
+		if(size == capacity)
+			expand();
+		for(int i = size;i > index;i--)
+			array[i] = array[i-1];
+		array[index] = value;
+		size++;
+	}
     
     public boolean remove(Object e)
     {
@@ -192,7 +193,7 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     	}
     	double[] temp = this.array;
     	this.array = new double[this.capacity]; // deleted??
-    	double elementOfIndex;
+    	double elementOfIndex = 0;
     	for (int i = 0; i <= this.size; i++)
     	{
     		if (i < index)
@@ -208,11 +209,11 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     public int indexOf(double e)
     {
     	for (int i = 0; i <= this.size; i++)
+    	{
     		if (this.array[i] == e)
     			return i;
-    		else
-    			if (i == this.size)
-    				return -1;
+    	}
+    	return -1;
     }
     
     public ArrayListDouble subList(int formIndex, int toIndex)
@@ -226,15 +227,16 @@ public class ArrayListDouble implements InterfaceList, Iterator<Double>
     		subList.array[i] = this.array[formIndex + i];
     	return subList;
     }
-}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+	@Override
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Double next() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

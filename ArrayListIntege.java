@@ -2,21 +2,19 @@ package syy;
 import java.util.Iterator;
 import java.util.List;
 
-public class ArrayListInteger implements Iterator<Integer>
+public class ArrayListInteger implements InterfaceList, Iterator<Integer>
 {
-	private int capacity;//the whole size of array;
-	private int size;//the use of capacity;
-	private int [] array;// array table;
+	private int capacity;
+	private int size;
+	private int [] array;
 	
 	ArrayListInteger()
 	{
-		this(10);
+		this(16);
 	}
 	
 	public ArrayListInteger(int capacity)
 	{
-		if(capacity < 0)
-			throw new IllegalArgumentException("Illegal Capcity:" + capacity);
 		this.capacity = capacity;
 		this.size = 0;
 		this.array = new int [this.capacity];
@@ -36,15 +34,14 @@ public class ArrayListInteger implements Iterator<Integer>
 			return this.size;
 	}
 	
-	
 	public boolean isEmpty()
 	{
 		return this.size == 0;
 	}
 	
-	public Iterator<Integer> iterator()
+	public Iterator<Interger> iterator()
 	{
-		Iterator<Integer> iterator = new Iterator<Integer>()
+		Iterator<Interger> iterator = new Iterator<Interger>()
 		{
 			private int currentIndex = 0;
 			public boolean hasNext()
@@ -52,7 +49,7 @@ public class ArrayListInteger implements Iterator<Integer>
 				return currentIndex < size;
 			}
 			
-			public Integer next()
+			public int next()
 			{
 				if(!hasNext())
 					throw new java.util.NoSuchElementException();
@@ -76,27 +73,27 @@ public class ArrayListInteger implements Iterator<Integer>
 	}
 	
 	//Modification Operations
-	public void append(int value)
+	public boolean add(Object e)
 	{
-		add2(size,value);
-	}
-
-	// add element after specific index
-	private void add2(int index,int value)
-	{
-		if(index < 0 || index > size)
-			System.out.println("Out of ArrayBound:" + index);
-		if(size == capacity)
+		if(e instanceof Integer)
+		{
+			int[]temp = this.array;
 			expand();
-		for(int i = size;i > index;i--)
-			array[i] = array[i-1];
-		array[index] = value;
-		size++;
+			for(int i = 0; i<= this.size; i++)
+				this.array[i] = temp[i];
+			this.array[this.size + 1] = (Interger)e;
+			this.size++;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	public boolean remove(Object e)
 	{
-		if(e instanceof Integer)
+		if(e instanceof Interger)
 		{
 			int [] temp = this.array;
 			int indexOf = 0;
@@ -112,7 +109,7 @@ public class ArrayListInteger implements Iterator<Integer>
 			{
 				if(i < indexOf)
 					this.array[i] = temp[i];
-				else if(i > indexOf)
+				else if(i > indexof)
 					this.array[i] = temp[i-1];
 			}
 			this.size--;
@@ -165,13 +162,13 @@ public class ArrayListInteger implements Iterator<Integer>
 	public int remove(int index)
 	{
 		int[] temp = this.array;
-		int elementOfIndex = 0;
+		int elementOfIndex;
 		for(int i = 0; i <= this.size ;i++)
 		{
 			if(i < index)
 				this.array[i] = temp[i];
 			else if(i == index)
-				elementOfIndex = this.array[i];
+				elementOfIndex = this.array[i] 
 			else if(i > index)
 				this.array[i] = temp[i +1];
 		}
@@ -181,33 +178,22 @@ public class ArrayListInteger implements Iterator<Integer>
 	public int indexOf(int val)
 	{
 		   	for (int i = 0; i <= this.size; i++)
-		   		if (this.array[i] == val)
-		   			return i;
-		   	return -1;
+    		if (this.array[i] == e)
+    			return i;
+    		else
+    			if (i == this.size)
+    				return -1;
 	}
-	/*
-	*Return the index of the last occurrentce of the specified element;
-	*/
-	public int lastIndexOf(Object o)
+	
+	public syy.List<Interger>subList(int formIndex,int toIndex)
 	{
-		if(o instanceof Integer)
-		{
-			for(int i = size -1 ; i >= 0 ; i--)
-				if(o.equals( array[i]))
-					return i;
-				else
-					System.out.println("No such element");
-		}
-		return -1;
-	}
-
-	@Override
-	public boolean hasNext() {
-		return false;
-	}
-
-	@Override
-	public Integer next() {
-		return null;
+		if(formIndex > this.size || toIndex > this.size )
+			throw new IndexOutofBoundsException("Index out of range.");
+		if(formIndex > toIndex)
+			throw new IllegalArgumentException("Indices are illegal.");
+		int [] subList = new int[toIndex - formIndex];
+		for(int i = 0; i < subList.length; i++)
+			subList[i] = this.array[formIndex + i];
+		return subList;
 	}
 }

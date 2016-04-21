@@ -18,7 +18,7 @@ package syy;
 import java.util.Iterator;
 import java.util.List;
 
-public class LinkedListInterger implements Iterator<Double>
+public class LinkedListInterger implements Iterator<Integer>
 {
 	//ListNode
 	private static class Node
@@ -27,7 +27,7 @@ public class LinkedListInterger implements Iterator<Double>
 		public Node prev;
 		public Node next;
 		
-		public Node(double val)
+		public Node(int val)
 		{
 			this.val = val;
 			this.prev = null;
@@ -35,7 +35,7 @@ public class LinkedListInterger implements Iterator<Double>
 		}
 	}
 
-	private size;
+	private int size;
 	private Node head;
 	private Node tail;
 	
@@ -57,7 +57,7 @@ public class LinkedListInterger implements Iterator<Double>
 	
 	public Iterator<Integer> iterator()
 	{
-		Iterator<Integer> iterator = new Iterator<>()
+		Iterator<Integer> iterator = new Iterator<Integer>()
 		{
 			private Node currentNode = head;
 			@Override
@@ -91,9 +91,9 @@ public class LinkedListInterger implements Iterator<Double>
 	
 	public int[] toArray()
 	{
-		int[] result = new int[this.theSize];
+		int[] result = new int[size];
 		Node p = head;
-		for (int i = 0; i < this.theSize; i++)
+		for (int i = 0; i <size; i++)
 		{
 			result[i] = p.val;
 			p = p.next;
@@ -105,15 +105,18 @@ public class LinkedListInterger implements Iterator<Double>
 	public boolean add(int val)
 	{
 		Node node = new Node(val);
-		tail.next = node;
 		node.prev = tail;
 		node.next = null;
+		if(tail != null)
+			tail.next = node;
 		tail = node;
-		this.size++;
+		if(head == null)
+			head = tail;
+		size++;
 		return true;
 	}
 	
-	public void add(int index,int val)
+	public boolean add(int index,int val)
 	{
 		Node node = new Node(val);
 		if(index < 0 || index > this.size)
@@ -127,6 +130,7 @@ public class LinkedListInterger implements Iterator<Double>
 		node.next = temp;
 		temp.prev = node;
 		this.size++;
+		return true;
 	}
 	
 	public void addFirst(int val)
@@ -154,7 +158,7 @@ public class LinkedListInterger implements Iterator<Double>
 			{
 				p.next.prev = p.prev;
 				p.prev.next = p.next;
-				theSize--;
+				size--;
 			}
 			else
 			{
@@ -194,26 +198,26 @@ public class LinkedListInterger implements Iterator<Double>
 		return temp.val;
 	}
 
-	public int getFirst();
+	public int getFirst()
 	{
 		return head.val;
 	}
 
-	public int getLast();
+	public int getLast()
 	{
 		return tail.val;
 	}
 	
-	public List<Integer> subList(int formIndex, int toIndex)
+	public LinkedListInterger subList(int formIndex, int toIndex)
 	{
-		if (formIndex > this.theSize || toIndex > this.theSize)
+		if (formIndex > this.size || toIndex > this.size)
 			throw new IndexOutOfBoundsException("Index out of range.");
 		if (formIndex > toIndex)
 			throw new IllegalArgumentException("Indices are illegal.");
 		Node former = findNode(formIndex);
 		Node to = findNode(toIndex);
-		LinkedListDouble subList = new LinkedListDouble();
-		subList.theSize = toIndex - formIndex;
+		LinkedListInterger subList = new LinkedListInterger();
+		subList.size = toIndex - formIndex;
 		Node p = former;
 		Node q = subList.head;
 		while(p != to)
@@ -231,5 +235,17 @@ public class LinkedListInterger implements Iterator<Double>
 		for (int i = 0; i < pos; i++)
 			temp = temp.next;
 		return temp;
+	}
+
+	@Override
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Integer next() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

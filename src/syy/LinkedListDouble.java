@@ -35,8 +35,8 @@ public class LinkedListDouble implements Iterator<Double>
 		}
 	}
 
-	private int size;
-	private Node head;
+	int size;
+	Node head;
 	private Node tail;
 	
 	// Constructor
@@ -57,7 +57,7 @@ public class LinkedListDouble implements Iterator<Double>
 	
 	public Iterator<Double> iterator()
 	{
-		Iterator<Double> iterator = new Iterator<>()
+		Iterator<Double> iterator = new Iterator<Double>()
 		{
 			private Node currentNode = head;
 			@Override
@@ -232,5 +232,15 @@ public class LinkedListDouble implements Iterator<Double>
 		for (int i = 0; i < pos; i++)
 			temp = temp.next;
 		return temp;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return false;
+	}
+
+	@Override
+	public Double next() {
+		return null;
 	}
 }
