@@ -16,7 +16,6 @@ Description: Implement LinkedList in Double Type
 package syy;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class LinkedListDouble implements Iterator<Double>
 {
@@ -140,10 +139,19 @@ public class LinkedListDouble implements Iterator<Double>
 	public void addLast(double val)
 	{
 		Node node = new Node(val);
-		node.prev = tail;
-		tail.next = node;
-		node.next = null;
-		tail = node;
+		if (head == null)
+		{
+			node.prev = null;
+			node.next = tail;
+			head = node;
+		}
+		else
+		{
+			node.prev = tail;
+			tail.next = node;
+			node.next = null;
+			tail = node;
+		}
 	}
 	
 	// Remove the first node with value e
@@ -242,5 +250,5 @@ public class LinkedListDouble implements Iterator<Double>
 	@Override
 	public Double next() {
 		return null;
-	}
+	}	
 }
