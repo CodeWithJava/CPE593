@@ -124,8 +124,10 @@ public class HashMapLinearChaining4
 		while (dictionary.hasNext())
 			dic.add(dictionary.next());
 		int[] collision = dic.hist;
-		for (int i = 0; i < collision.length; i++)
-			System.out.println("Insert time of " + (i+1) + ": " + collision[i]);
+		for (int i = 0; i < collision.length; i++){
+			System.out.print("Insert time of " + (i+1) + ": " + collision[i] + "  ");
+			System.out.println(String.format("%.4f", (collision[i]/213557.0)*100.0) + "%");
+		}
 		dictionary.close();
 		
 		Scanner test = new Scanner(new FileInputStream("hw8.dat"));

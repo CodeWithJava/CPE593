@@ -37,10 +37,13 @@ public class LinkedListDouble implements Iterator<Double>
 	int size;
 	Node head;
 	private Node tail;
+	Node dummy;
 	
 	// Constructor
 	public LinkedListDouble()
 	{
+		dummy = new Node(0);
+		dummy.next = head;
 		clear();
 	}
 	
@@ -58,11 +61,11 @@ public class LinkedListDouble implements Iterator<Double>
 	{
 		Iterator<Double> iterator = new Iterator<Double>()
 		{
-			private Node currentNode = head;
+			private Node currentNode = dummy;
 			@Override
 			public boolean hasNext()
 			{
-				return currentNode.next != null;
+				return head != null;
 			}
 			@Override
 			public Double next()
@@ -139,17 +142,17 @@ public class LinkedListDouble implements Iterator<Double>
 	public void addLast(double val)
 	{
 		Node node = new Node(val);
-		if (head == null)
+		if(head == null)
 		{
-			node.prev = null;
-			node.next = tail;
+			dummy.next = node;
+			node.prev = dummy;
+			tail = node;
 			head = node;
 		}
 		else
 		{
-			node.prev = tail;
 			tail.next = node;
-			node.next = null;
+			node.prev = tail;
 			tail = node;
 		}
 	}
