@@ -118,6 +118,7 @@ public class HashMapLinearChaining2
 	
 	public static void main(String[] args) throws Exception
 	{
+		System.out.println("Hash function: DJB2");
 		long startTime = System.nanoTime();
 		HashMapLinearChaining2 dic = new HashMapLinearChaining2(150000);
 		Scanner dictionary = new Scanner(new FileInputStream("dict.txt"));
@@ -131,11 +132,7 @@ public class HashMapLinearChaining2
 		}
 		dictionary.close();
 		
-		Scanner test = new Scanner(new FileInputStream("hw8.dat"));
-		while (test.hasNext())
-			System.out.println("Test word in dictionary: " + dic.contains(test.next()));
-		test.close();
 		long stopTime = System.nanoTime();
-		System.out.println(stopTime - startTime);
+		System.out.println("Time: " + (stopTime - startTime) + "ns");
 	}
 }

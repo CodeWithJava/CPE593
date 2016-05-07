@@ -118,6 +118,7 @@ public class HashMapLinearChaining4
 	
 	public static void main(String[] args) throws Exception
 	{
+		System.out.println("Hash function: SuperfashHash");
 		long startTime = System.nanoTime();
 		HashMapLinearChaining4 dic = new HashMapLinearChaining4(150000);
 		Scanner dictionary = new Scanner(new FileInputStream("dict.txt"));
@@ -129,13 +130,9 @@ public class HashMapLinearChaining4
 			System.out.println(String.format("%.4f", (collision[i]/213557.0)*100.0) + "%");
 		}
 		dictionary.close();
-		
-		Scanner test = new Scanner(new FileInputStream("hw8.dat"));
-		while (test.hasNext())
-			System.out.println("Test word in dictionary: " + dic.contains(test.next()));
-		test.close();
+
 		long stopTime = System.nanoTime();
-		System.out.println(stopTime - startTime);
+		System.out.println("Time: " + (stopTime - startTime) + "ns");
 	}
 }
 
